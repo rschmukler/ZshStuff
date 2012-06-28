@@ -34,6 +34,21 @@ export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 #Load RVM
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # This loads RVM into a shell session.
 
+function define_vim_wrappers()
+{
+  vim_commands=(
+    eview evim gview gvim gvimdiff gvimtutor rgview
+    rgvim rview rvim vim vimdiff vimtutor xxd mvim
+  )
+
+  for cmd in ${vim_commands[@]}; do
+    cmd_path=`/usr/bin/env which -a "${cmd}" 2>/dev/null | grep '^/'`
+    if [ -x "${cmd_path}" ]; then
+      eval "function ${cmd} () { (unset GEM_HOME; unset GEM_PATH; $cmd_path \$@) }"
+    fi
+  done
+}
+
 #Additional Customizations
 define_vim_wrappers
 alias ls="/usr/local/bin/gls --color=auto -hF"
@@ -48,3 +63,5 @@ alias spec=rspec
 alias cleardns='sudo dscacheutil -flushcache'
 alias rehash='hash -r'
 alias 'glp'="git log --graph --pretty=format:'%Cred%h%Creset -%Cblue %an %Creset - %C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

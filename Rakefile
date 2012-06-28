@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'pry'
 
 OH_MY_ZSH_PATH = '~/.oh-my-zsh'
 
